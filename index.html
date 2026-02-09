@@ -24,7 +24,8 @@
                             yellow: '#FFD700',
                             pink: '#FF8DA1',
                             green: '#7ED957',
-                            dark: '#2D3436'
+                            dark: '#2D3436',
+                            purple: '#9B51E0'
                         }
                     },
                     fontFamily: {
@@ -49,20 +50,49 @@
         }
         .marquee-content {
             display: inline-block;
-            animation: marquee 20s linear infinite;
+            animation: marquee 30s linear infinite;
         }
         @keyframes marquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
-        /* Floating Animation */
-        .float-animation {
-            animation: float 4s ease-in-out infinite;
+        /* Hero Video Overlay */
+        .video-overlay {
+            background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.8) 80%, #ffffff 100%);
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Cloud Separator */
+        .cloud-bottom {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='1' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            z-index: 10;
+        }
+        .cloud-top {
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23f9fafb' fill-opacity='1' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            z-index: 10;
         }
 
         /* Earth Rotation */
@@ -74,15 +104,12 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Scroll Reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
         }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
         /* Custom Scrollbar */
@@ -101,19 +128,19 @@
 <body class="bg-white text-brand-dark">
 
     <!-- Header -->
-    <header class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
+    <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md z-[100] border-b border-gray-100">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center text-white text-xl">
+            <div class="flex items-center gap-2 group cursor-pointer">
+                <div class="w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center text-white text-xl group-hover:rotate-12 transition-transform">
                     <i class="fas fa-globe-asia"></i>
                 </div>
                 <h1 class="text-2xl font-black text-brand-blue tracking-tighter">たたかえ！ちきゅうまとぺ</h1>
             </div>
-            <nav class="hidden md:flex gap-8 font-bold text-gray-600">
+            <nav class="hidden md:flex items-center gap-8 font-bold text-gray-600">
                 <a href="#concept" class="hover:text-brand-blue transition-colors">コンセプト</a>
+                <a href="#gallery" class="hover:text-brand-blue transition-colors">ギャラリー</a>
                 <a href="#play" class="hover:text-brand-blue transition-colors">あそびかた</a>
-                <a href="#news" class="hover:text-brand-blue transition-colors">おしらせ</a>
-                <a href="#" class="bg-brand-pink text-white px-6 py-2 rounded-full hover:bg-opacity-90 transition-all shadow-md">なかまになる</a>
+                <a href="#" class="bg-brand-pink text-white px-6 py-2 rounded-full hover:scale-105 transition-all shadow-md shadow-brand-pink/30">なかまになる</a>
             </nav>
             <button class="md:hidden text-2xl">
                 <i class="fas fa-bars"></i>
@@ -121,56 +148,49 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 px-6 overflow-hidden">
-        <div class="container mx-auto flex flex-col lg:flex-row items-center gap-12">
-            <div class="lg:w-1/2 z-10">
-                <span class="inline-block bg-brand-yellow text-brand-dark px-4 py-1 rounded-full text-sm font-bold mb-4 shadow-sm">
-                    新感覚！オノマトペ・アクションゲーム
-                </span>
-                <h2 class="text-5xl lg:text-7xl font-black mb-6 leading-tight">
-                    コトバのチカラで、<br>
-                    <span class="text-brand-blue">地球</span>をすくえ！
-                </h2>
-                <p class="text-xl text-gray-600 mb-8 leading-relaxed">
-                    「どん！」「きらきら」「しゅたっ！」<br>
-                    きみの声が最強の魔法になる。世界初のオノマトペ・アドベンチャーがいよいよ開幕！
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <button class="bg-brand-blue text-white px-8 py-4 rounded-full text-xl font-bold hover:scale-105 transition-transform shadow-xl">
-                        いますぐ遊ぶ！ <i class="fas fa-play ml-2"></i>
-                    </button>
-                    <button class="border-4 border-brand-blue text-brand-blue px-8 py-4 rounded-full text-xl font-bold hover:bg-brand-blue hover:text-white transition-all">
-                        詳しくみる
-                    </button>
-                </div>
-            </div>
-            <div class="lg:w-1/2 relative">
-                <!-- Decorative Elements -->
-                <div class="absolute -top-10 -left-10 w-24 h-24 bg-brand-pink rounded-full blur-3xl opacity-30 animate-pulse"></div>
-                <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-brand-green rounded-full blur-3xl opacity-20"></div>
-                
-                <!-- Floating Earth -->
-                <div class="float-animation relative">
-                    <div class="w-64 h-64 lg:w-96 lg:h-96 bg-brand-blue rounded-full mx-auto shadow-[0_0_50px_rgba(77,182,225,0.4)] overflow-hidden relative border-8 border-white">
-                        <!-- Simulated Earth Texture (CSS) -->
-                        <div class="absolute inset-0 earth-rotation bg-opacity-50" style="background-image: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 50%), url('https://www.transparenttextures.com/patterns/world-map.png'); background-size: cover;"></div>
-                        <!-- Simple Character Placeholder -->
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-6xl lg:text-8xl drop-shadow-lg">🌍</span>
-                        </div>
-                    </div>
-                    <!-- Bubble Text -->
-                    <div class="absolute -top-4 right-10 bg-white p-4 rounded-2xl shadow-lg border-2 border-brand-blue animate-bounce">
-                        <p class="text-brand-blue font-black text-xl">ババーン！！</p>
+    <!-- Hero Section with Background Video -->
+    <section class="relative h-[90vh] md:h-screen min-h-[600px] flex items-center overflow-hidden">
+        <!-- Video Background -->
+        <div class="absolute inset-0 z-0">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                <!-- Using a bright, kids-friendly stock video URL -->
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-children-playing-together-in-a-field-of-flowers-11751-large.mp4" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 video-overlay"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-3xl">
+                <div class="reveal active">
+                    <span class="inline-block bg-brand-yellow text-brand-dark px-6 py-2 rounded-full text-lg font-black mb-6 shadow-xl border-4 border-white animate-bounce">
+                        コトバの冒険がはじまるよ！
+                    </span>
+                    <h2 class="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tight text-brand-dark">
+                        キミの声で<br>
+                        <span class="text-brand-blue">地球</span>をわらわせよう！
+                    </h2>
+                    <p class="text-xl md:text-2xl text-gray-700 mb-10 leading-relaxed font-medium">
+                        「どん！」「きらきら」「しゅたっ！」<br class="hidden md:block">
+                        キミの声が最強の魔法になる、新感覚オノマトペ・アドベンチャー！
+                    </p>
+                    <div class="flex flex-wrap gap-6">
+                        <button class="group bg-brand-blue text-white px-10 py-5 rounded-full text-2xl font-black hover:scale-105 transition-all shadow-[0_10px_30px_rgba(77,182,225,0.4)] flex items-center gap-3">
+                            いますぐ遊ぶ！ <i class="fas fa-play-circle text-3xl group-hover:rotate-12 transition-transform"></i>
+                        </button>
+                        <button class="bg-white border-4 border-brand-blue text-brand-blue px-10 py-5 rounded-full text-2xl font-black hover:bg-brand-blue hover:text-white transition-all shadow-lg">
+                            詳しくみる
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Cloud Transition -->
+        <div class="cloud-bottom"></div>
     </section>
 
     <!-- Marquee Section -->
-    <div class="bg-brand-dark py-4 marquee-container">
+    <div class="bg-brand-dark py-6 marquee-container relative z-20">
         <div class="marquee-content flex gap-8">
             <span class="text-white text-3xl font-black tracking-widest uppercase italic mx-4">TATAKAE! CHIKYU-MATOPE</span>
             <span class="text-brand-blue text-3xl font-black tracking-widest uppercase italic mx-4">TATAKAE! CHIKYU-MATOPE</span>
@@ -184,42 +204,95 @@
         </div>
     </div>
 
-    <!-- Concept Section -->
-    <section id="concept" class="py-24 bg-gray-50">
+    <!-- Gallery Section (New: みんなのえがお) -->
+    <section id="gallery" class="py-24 bg-white relative">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16 reveal">
-                <h3 class="text-4xl font-black mb-4">なにをするの？</h3>
-                <div class="w-24 h-2 bg-brand-blue mx-auto rounded-full"></div>
+                <span class="text-brand-pink font-black text-xl mb-2 block tracking-widest uppercase">Everyone's Smile</span>
+                <h3 class="text-5xl font-black mb-4">みんな、夢中になってるよ！</h3>
+                <div class="w-32 h-2 bg-brand-yellow mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="reveal hover:-rotate-2 transition-transform">
+                    <img src="https://images.unsplash.com/photo-1502086223501-7ea2443d844d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Kid smiling" class="rounded-[2.5rem] shadow-xl aspect-square object-cover border-4 border-brand-pink">
+                </div>
+                <div class="reveal pt-8 md:pt-12 hover:rotate-2 transition-transform" style="transition-delay: 0.1s;">
+                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Kid playing" class="rounded-[2.5rem] shadow-xl aspect-square object-cover border-4 border-brand-blue">
+                </div>
+                <div class="reveal hover:-rotate-3 transition-transform" style="transition-delay: 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Excited kid" class="rounded-[2.5rem] shadow-xl aspect-square object-cover border-4 border-brand-yellow">
+                </div>
+                <div class="reveal pt-8 md:pt-12 hover:rotate-3 transition-transform" style="transition-delay: 0.3s;">
+                    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Kid at party" class="rounded-[2.5rem] shadow-xl aspect-square object-cover border-4 border-brand-green">
+                </div>
+            </div>
+
+            <div class="mt-20 bg-brand-blue/5 p-12 rounded-[4rem] flex flex-col md:flex-row items-center gap-10 reveal">
+                <div class="md:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Child with technology" class="rounded-[3rem] shadow-2xl border-8 border-white">
+                </div>
+                <div class="md:w-1/2">
+                    <h4 class="text-4xl font-black mb-6 leading-tight">声を出すことが、<br><span class="text-brand-pink">最高の教育</span>になる。</h4>
+                    <p class="text-lg text-gray-600 font-medium leading-relaxed mb-8">
+                        恥ずかしがらずに声を出す。リズムに合わせて言葉を紡ぐ。それは表現力の第一歩です。「ちきゅうまとぺ」は、デジタルを通じた新しい感性教育を目指しています。
+                    </p>
+                    <div class="flex gap-4">
+                        <div class="bg-white p-4 rounded-3xl shadow-md border-b-4 border-brand-yellow flex-1">
+                            <span class="block text-3xl font-black text-brand-blue mb-1">98%</span>
+                            <span class="text-xs font-bold text-gray-500">また遊びたい！</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-3xl shadow-md border-b-4 border-brand-pink flex-1">
+                            <span class="block text-3xl font-black text-brand-pink mb-1">100+</span>
+                            <span class="text-xs font-bold text-gray-500">オノマトペの種類</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Concept Section -->
+    <section id="concept" class="py-24 bg-gray-50 relative overflow-hidden">
+        <div class="cloud-top"></div>
+        <div class="container mx-auto px-6 pt-16">
+            <div class="text-center mb-16 reveal">
+                <h3 class="text-5xl font-black mb-4">なにをするの？</h3>
+                <p class="text-gray-500 font-bold">３つのステップで地球を笑顔に！</p>
+                <div class="w-24 h-2 bg-brand-blue mx-auto rounded-full mt-4"></div>
             </div>
             
             <div class="grid md:grid-cols-3 gap-10">
                 <!-- Card 1 -->
-                <div class="bg-white p-10 rounded-[3rem] shadow-xl hover:shadow-2xl transition-all reveal">
-                    <div class="w-20 h-20 bg-brand-pink rounded-3xl flex items-center justify-center text-white text-4xl mb-6 shadow-lg shadow-brand-pink/30">
+                <div class="group bg-white p-12 rounded-[4rem] shadow-xl hover:shadow-2xl transition-all reveal relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-pink/10 rounded-full group-hover:scale-150 transition-transform"></div>
+                    <div class="w-24 h-24 bg-brand-pink rounded-[2rem] flex items-center justify-center text-white text-5xl mb-8 shadow-lg shadow-brand-pink/30 group-hover:rotate-6 transition-transform">
                         <i class="fas fa-microphone-lines"></i>
                     </div>
-                    <h4 class="text-2xl font-black mb-4">声をだそう！</h4>
-                    <p class="text-gray-600 leading-relaxed font-medium">
+                    <h4 class="text-3xl font-black mb-6">声をだそう！</h4>
+                    <p class="text-gray-600 leading-relaxed font-bold">
                         マイクに向かってオノマトペをさけぼう！声の大きさやリズムで、画面の中のキャラクターが色んな動きをするよ。
                     </p>
                 </div>
                 <!-- Card 2 -->
-                <div class="bg-white p-10 rounded-[3rem] shadow-xl hover:shadow-2xl transition-all reveal" style="transition-delay: 0.2s;">
-                    <div class="w-20 h-20 bg-brand-yellow rounded-3xl flex items-center justify-center text-brand-dark text-4xl mb-6 shadow-lg shadow-brand-yellow/30">
+                <div class="group bg-white p-12 rounded-[4rem] shadow-xl hover:shadow-2xl transition-all reveal relative overflow-hidden" style="transition-delay: 0.2s;">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-yellow/10 rounded-full group-hover:scale-150 transition-transform"></div>
+                    <div class="w-24 h-24 bg-brand-yellow rounded-[2rem] flex items-center justify-center text-brand-dark text-5xl mb-8 shadow-lg shadow-brand-yellow/30 group-hover:-rotate-6 transition-transform">
                         <i class="fas fa-bolt-lightning"></i>
                     </div>
-                    <h4 class="text-2xl font-black mb-4">スキルが発動！</h4>
-                    <p class="text-gray-600 leading-relaxed font-medium">
+                    <h4 class="text-3xl font-black mb-6">スキルが発動！</h4>
+                    <p class="text-gray-600 leading-relaxed font-bold">
                         「どどーん！」と言うと強力な雷が！「きらきら」と言うと回復の光が！きみだけの最強コンボを見つけ出せ。
                     </p>
                 </div>
                 <!-- Card 3 -->
-                <div class="bg-white p-10 rounded-[3rem] shadow-xl hover:shadow-2xl transition-all reveal" style="transition-delay: 0.4s;">
-                    <div class="w-20 h-20 bg-brand-green rounded-3xl flex items-center justify-center text-white text-4xl mb-6 shadow-lg shadow-brand-green/30">
+                <div class="group bg-white p-12 rounded-[4rem] shadow-xl hover:shadow-2xl transition-all reveal relative overflow-hidden" style="transition-delay: 0.4s;">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-green/10 rounded-full group-hover:scale-150 transition-transform"></div>
+                    <div class="w-24 h-24 bg-brand-green rounded-[2rem] flex items-center justify-center text-white text-5xl mb-8 shadow-lg shadow-brand-green/30 group-hover:rotate-6 transition-transform">
                         <i class="fas fa-hand-holding-heart"></i>
                     </div>
-                    <h4 class="text-2xl font-black mb-4">地球を守ろう！</h4>
-                    <p class="text-gray-600 leading-relaxed font-medium">
+                    <h4 class="text-3xl font-black mb-6">地球を守ろう！</h4>
+                    <p class="text-gray-600 leading-relaxed font-bold">
                         地球をこわそうとする悪の組織を、コトバのパワーで倒そう。みんなの声がつながれば、世界はもっと輝くよ！
                     </p>
                 </div>
@@ -232,41 +305,48 @@
         <div class="container mx-auto px-6">
             <div class="flex flex-col lg:flex-row items-center gap-16">
                 <div class="lg:w-1/2 reveal">
-                    <div class="relative">
-                        <img src="https://picsum.photos/id/239/800/600" alt="Play Scene" class="rounded-[4rem] shadow-2xl border-8 border-brand-yellow">
-                        <div class="absolute -bottom-6 -right-6 bg-brand-pink text-white px-8 py-4 rounded-full text-2xl font-black shadow-xl">
-                            たのしい！！
+                    <div class="relative group">
+                        <!-- Playful Image -->
+                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Kids playing together" class="rounded-[5rem] shadow-[0_30px_60px_rgba(0,0,0,0.1)] border-[16px] border-brand-yellow group-hover:scale-[1.02] transition-transform">
+                        
+                        <!-- Floating Bubbles -->
+                        <div class="absolute -top-12 -left-12 bg-white px-8 py-5 rounded-[3rem] shadow-2xl border-4 border-brand-blue float-animation">
+                            <span class="text-3xl font-black text-brand-blue">ワハハ！</span>
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 bg-brand-pink text-white px-10 py-6 rounded-[3rem] shadow-2xl text-3xl font-black group-hover:rotate-6 transition-transform">
+                            たのしすぎ！
                         </div>
                     </div>
                 </div>
                 <div class="lg:w-1/2 reveal">
-                    <h3 class="text-4xl font-black mb-8 leading-tight">
-                        いつでも、どこでも、<br>
-                        スマホひとつで<span class="text-brand-pink">冒険</span>へ。
+                    <div class="bg-brand-blue/10 p-2 px-6 rounded-full inline-block mb-6 font-black text-brand-blue">いつでもどこでも！</div>
+                    <h3 class="text-5xl font-black mb-10 leading-tight">
+                        スマホひとつで、<br>
+                        リビングが<span class="text-brand-pink underline decoration-dotted underline-offset-8">冒険の地</span>に。
                     </h3>
-                    <ul class="space-y-6">
-                        <li class="flex items-start gap-4">
-                            <div class="bg-brand-blue/10 p-2 rounded-full text-brand-blue">
-                                <i class="fas fa-check-circle text-xl"></i>
+                    <ul class="space-y-8">
+                        <li class="flex items-center gap-6 group">
+                            <div class="w-14 h-14 bg-brand-blue text-white rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-lg shadow-brand-blue/20">
+                                <i class="fas fa-rocket"></i>
                             </div>
-                            <p class="text-lg font-bold">面倒な登録は一切なし！すぐにスタートできます。</p>
+                            <p class="text-xl font-bold text-gray-700 italic">面倒な登録は一切なし！すぐにスタートできます。</p>
                         </li>
-                        <li class="flex items-start gap-4">
-                            <div class="bg-brand-blue/10 p-2 rounded-full text-brand-blue">
-                                <i class="fas fa-check-circle text-xl"></i>
+                        <li class="flex items-center gap-6 group">
+                            <div class="w-14 h-14 bg-brand-yellow text-brand-dark rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-lg shadow-brand-yellow/20">
+                                <i class="fas fa-face-laugh-squint"></i>
                             </div>
-                            <p class="text-lg font-bold">年齢制限なし！3歳から100歳まで楽しめます。</p>
+                            <p class="text-xl font-bold text-gray-700 italic">年齢制限なし！家族みんなで楽しめます。</p>
                         </li>
-                        <li class="flex items-start gap-4">
-                            <div class="bg-brand-blue/10 p-2 rounded-full text-brand-blue">
-                                <i class="fas fa-check-circle text-xl"></i>
+                        <li class="flex items-center gap-6 group">
+                            <div class="w-14 h-14 bg-brand-green text-white rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-lg shadow-brand-green/20">
+                                <i class="fas fa-users"></i>
                             </div>
-                            <p class="text-lg font-bold">学校やイベントでの活用も大歓迎です。</p>
+                            <p class="text-xl font-bold text-gray-700 italic">友達といっしょに協力プレイもできるよ！</p>
                         </li>
                     </ul>
-                    <div class="mt-12">
-                        <a href="#" class="inline-flex items-center gap-3 text-brand-blue font-black text-xl hover:gap-6 transition-all">
-                            詳しく見る <i class="fas fa-arrow-right"></i>
+                    <div class="mt-16">
+                        <a href="#" class="inline-flex items-center gap-4 bg-brand-dark text-white px-10 py-5 rounded-full font-black text-2xl hover:gap-8 hover:bg-brand-blue transition-all shadow-xl">
+                            もっと詳しく <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
@@ -275,52 +355,62 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-brand-dark text-white pt-20 pb-10">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-12 mb-16">
+    <footer class="bg-brand-dark text-white pt-32 pb-10 relative overflow-hidden">
+        <!-- Floating Earth Decor -->
+        <div class="absolute top-10 right-10 opacity-20 w-64 h-64 border-8 border-brand-blue rounded-full float-animation"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-4 gap-16 mb-24">
                 <div class="md:col-span-2">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center text-white text-2xl">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-16 h-16 bg-brand-blue rounded-full flex items-center justify-center text-white text-3xl shadow-lg shadow-brand-blue/50">
                             <i class="fas fa-globe-asia"></i>
                         </div>
-                        <h2 class="text-3xl font-black tracking-tighter">たたかえ！ちきゅうまとぺ</h2>
+                        <h2 class="text-4xl font-black tracking-tighter">たたかえ！<br>ちきゅうまとぺ</h2>
                     </div>
-                    <p class="text-gray-400 max-w-md leading-relaxed">
-                        私たちはオノマトペを通じて、子供たちの表現力と想像力を育むデジタルエンターテインメントを提供しています。
+                    <p class="text-gray-400 max-w-md text-xl leading-relaxed font-medium">
+                        オノマトペで世界を救う。私たちは子供たちの自由な表現を応援し、テクノロジーで驚きと発見を届けます。
                     </p>
                 </div>
                 <div>
-                    <h5 class="text-xl font-bold mb-6 text-brand-blue">リンク</h5>
-                    <ul class="space-y-4 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition-colors">利用規約</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">プライバシーポリシー</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">お問い合わせ</a></li>
+                    <h5 class="text-2xl font-black mb-8 text-brand-blue">メニュー</h5>
+                    <ul class="space-y-6 text-xl font-bold text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">コンセプト</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">遊びかた</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">ギャラリー</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">なかまになる</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h5 class="text-xl font-bold mb-6 text-brand-blue">フォローしてね</h5>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-brand-blue transition-colors">
+                    <h5 class="text-2xl font-black mb-8 text-brand-pink">SNS</h5>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#" class="w-14 h-14 bg-gray-800 rounded-3xl flex items-center justify-center text-2xl hover:bg-brand-blue transition-all hover:-translate-y-2">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-brand-pink transition-colors">
+                        <a href="#" class="w-14 h-14 bg-gray-800 rounded-3xl flex items-center justify-center text-2xl hover:bg-brand-pink transition-all hover:-translate-y-2">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-red-500 transition-colors">
+                        <a href="#" class="w-14 h-14 bg-gray-800 rounded-3xl flex items-center justify-center text-2xl hover:bg-red-500 transition-all hover:-translate-y-2">
                             <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="w-14 h-14 bg-gray-800 rounded-3xl flex items-center justify-center text-2xl hover:bg-brand-purple transition-all hover:-translate-y-2">
+                            <i class="fab fa-tiktok"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:row justify-between items-center text-sm text-gray-500">
+            <div class="border-t border-gray-800 pt-10 flex flex-col md:flex-row justify-between items-center text-gray-500 font-bold">
                 <p>&copy; 2024 TATAKAE! CHIKYU-MATOPE Project. All Rights Reserved.</p>
-                <p class="mt-4 md:mt-0">Made with ❤️ for Earth.</p>
+                <div class="flex gap-8 mt-6 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy</a>
+                    <a href="#" class="hover:text-white">Terms</a>
+                </div>
             </div>
         </div>
     </footer>
 
     <!-- Back to top button -->
-    <button id="backToTop" class="fixed bottom-10 right-10 w-14 h-14 bg-brand-blue text-white rounded-full shadow-2xl opacity-0 translate-y-20 transition-all duration-300 z-[60] flex items-center justify-center hover:scale-110 active:scale-95">
+    <button id="backToTop" class="fixed bottom-10 right-10 w-16 h-16 bg-brand-blue text-white rounded-full shadow-2xl opacity-0 translate-y-20 transition-all duration-300 z-[100] flex items-center justify-center text-2xl hover:scale-110 active:scale-95 border-4 border-white">
         <i class="fas fa-chevron-up"></i>
     </button>
 
@@ -346,7 +436,7 @@
         // Back to top button logic
         const backToTopBtn = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) {
+            if (window.scrollY > 500) {
                 backToTopBtn.classList.remove('opacity-0', 'translate-y-20');
             } else {
                 backToTopBtn.classList.add('opacity-0', 'translate-y-20');
@@ -369,21 +459,20 @@
                 const target = document.querySelector(targetId);
                 if (target) {
                     window.scrollTo({
-                        top: target.offsetTop - 80,
+                        top: target.offsetTop - 100,
                         behavior: 'smooth'
                     });
                 }
             });
         });
 
-        // Parallax Effect for the Earth Floating element (subtle)
-        window.addEventListener('mousemove', (e) => {
-            const earth = document.querySelector('.float-animation');
-            if (earth) {
-                const x = (window.innerWidth / 2 - e.pageX) / 50;
-                const y = (window.innerHeight / 2 - e.pageY) / 50;
-                earth.style.transform = `translate(${x}px, ${y}px)`;
-            }
+        // Background Parallax for floaters
+        window.addEventListener('scroll', () => {
+            const scroll = window.scrollY;
+            document.querySelectorAll('.float-animation').forEach(el => {
+                const speed = 0.1;
+                el.style.transform = `translateY(${scroll * speed}px)`;
+            });
         });
     </script>
 </body>
